@@ -8,8 +8,6 @@
   Written by Limor Fried/Ladyada for Adafruit Industries.  
   BSD license, all text above must be included in any redistribution
  ****************************************************/
-
-
 #include "fingerprints.h"
 #include <SoftwareSerial.h>
 
@@ -19,7 +17,6 @@ int getFingerprintIDez();
 // pin #3 is OUT from arduino  (WHITE wire)
 SoftwareSerial mySerial(2, 3);
 int i;
-
 
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
@@ -32,28 +29,39 @@ void setup()
   // set the data rate for the sensor serial port
   finger.begin(57600);
   
-  if (finger.verifyPassword()) {
-    Serial.println("Found fingerprint sensor!");
-  } else {
-    Serial.println("Did not find fingerprint sensor :(");
-    while (1);
-  }
-  
+  bool cannot_leave = true;
+  do {
+    if (finger.verifyPassword()) {
+      Serial.println("Found fingerprint sensor!");
+      cannot_leave = false;
+    } else {
+      Serial.println("Did not find fingerprint sensor :(");
+        delay(2000);  //wait for 2 seconds and try again
+    }
+  } while (cannot_leave);
+
   i = 0;
+  //TODO initiate bluetooth
+  //TODO loop until bluetooth is connected
 }
 
 void loop()
 {
+  //TODO some kind of bluetooth listener
   Serial.print("run #"); Serial.println(i);
   uint8_t f = getFingerprintEnroll();
   i++;
-  delay(5000);
+  delay(5000);    //Delay for 5 seconds
 }
 
 uint8_t getFingerprintEnroll() {
 
   int p = -1;
   Serial.println("Put a finger to the scanner. Extraction in");
+  Serial.print("5 ");
+  delay(999);
+  Serial.print("4 ");
+  delay(999);
   Serial.print("3 ");
   delay(999);
   Serial.print("2 ");
@@ -114,6 +122,10 @@ uint8_t getFingerprintEnroll() {
   p = -1;
   
   Serial.println("Put the same finger to the scanner. Matching sequence in");
+  Serial.print("5 ");
+  delay(999);
+  Serial.print("4 ");
+  delay(999);
   Serial.print("3 ");
   delay(999);
   Serial.print("2 ");
@@ -178,7 +190,7 @@ uint8_t getFingerprintEnroll() {
       return p;  
   }
   
-  p = finger.getModel();
+  p = finger.upChar();
   switch (p) {
     case FINGERPRINT_OK:
       Serial.println("template transferring");
@@ -201,5 +213,26 @@ uint8_t getFingerprintEnroll() {
     }
   }
   Serial.print(index); Serial.println(" bytes read");
+}
+
+uint8_t fingerprintValidation() {
+  //put input template into cb2
+  //get image
+  //image2tz cb1
+  //createModel
+  //TODO repeat { write finger to CharBuffer2, then compare CB1 & CB2 }
+
+}
+
+uint8_t fingerprintValidation2() {
+  //Push a whole bunch of template into db and ask db to do the searching
+}
+
+uint8_t scanFinger() {
+
+}
+
+uint8_t scanFingerTwice() {
+  
 }
 

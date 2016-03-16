@@ -127,8 +127,8 @@ uint8_t Adafruit_Fingerprint::loadModel(uint16_t id) {
 }
 
 //transfer a fingerprint template from Char Buffer 1 to host computer
-uint8_t Adafruit_Fingerprint::getModel(void) {
-    uint8_t packet[] = {FINGERPRINT_UPLOAD, 0x01};
+uint8_t Adafruit_Fingerprint::upChar(void) {
+    uint8_t packet[] = {FINGERPRINT_UPCHAR, 0x01};
     writePacket(theAddress, FINGERPRINT_COMMANDPACKET, sizeof(packet)+2, packet);
     uint8_t len = getReply(packet);
     

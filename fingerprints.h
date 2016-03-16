@@ -55,7 +55,8 @@
 #define FINGERPRINT_REGMODEL 0x05
 #define FINGERPRINT_STORE 0x06
 #define FINGERPRINT_LOAD 0x07
-#define FINGERPRINT_UPLOAD 0x08
+#define FINGERPRINT_UPCHAR 0x08
+#define FINGERPRINT_DOWNCHAR 0x09
 #define FINGERPRINT_UPIMAGE 0x0A
 #define FINGERPRINT_DOWNIMAGE 0x0B
 #define FINGERPRINT_DELETE 0x0C
@@ -85,7 +86,7 @@ class Adafruit_Fingerprint {
   uint8_t emptyDatabase(void);
   uint8_t storeModel(uint16_t id);
   uint8_t loadModel(uint16_t id);
-  uint8_t getModel(void);
+  uint8_t upChar(void);
   uint8_t deleteModel(uint16_t id);
   uint8_t fingerFastSearch(void);
   uint8_t getTemplateCount(void);
